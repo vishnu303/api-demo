@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:api_demo/model/book.dart';
 import 'package:api_demo/repo/api_call.dart';
 import 'package:api_demo/screens/detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,19 +11,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // BookModel? books;
-
-  // @override
-  // void initState() {
-  //   getData();
-  //   super.initState();
-  // }
-
-  // void getData() async {
-  //   books = await ApiCall.getData();
-  //   setState(() {});
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
             future: ApiCall.getData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Text('Someting went wrong !!!');
+                return const Text('Someting went wrong !!!');
               } else {
                 BookModel books = snapshot.data!;
                 return Padding(
@@ -52,14 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisSpacing: 10,
                         crossAxisCount: 2,
                       ),
-                      itemCount: books!.items!.length,
+                      itemCount: books.items!.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    DetailScreen(id: books!.items![index].id!),
+                                    DetailScreen(id: books.items![index].id!),
                               ),
                             );
                           },
@@ -68,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               footer: GridTileBar(
                                 backgroundColor: Colors.black45,
                                 title: Text(
-                                  books!.items![index].volumeInfo!.title
+                                  books.items![index].volumeInfo!.title
                                       .toString(),
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -77,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: Image.network(
-                                books!.items![index].volumeInfo!.imageLinks!
+                                books.items![index].volumeInfo!.imageLinks!
                                     .thumbnail!,
                               ),
                             ),
